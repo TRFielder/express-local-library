@@ -10,10 +10,18 @@ var catalogRouter = require("./routes/catalog"); //Import routes for "catalog" a
 
 var app = express();
 
+const compression = require("compression");
+const helmet = require("helmet");
+
+app.use(compression()); // Compress all routes
+app.use(helmet());
+
 //Set up mongoose connection
 const mongoose = require("mongoose");
-const mongoDB =
+const dev_db_url =
   "mongodb+srv://cooluser:coolpassword@cluster0.sjtvc.mongodb.net/?retryWrites=true&w=majority";
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
+
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
